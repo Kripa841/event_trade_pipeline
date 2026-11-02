@@ -63,6 +63,22 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  analytics:
+    build: .
+    container_name: trade-analytics
+    command: python -m app.analytics
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: trade-events
+      KAFKA_ANALYTICS_TOPIC: trade-analytics
+      KAFKA_ALERTS_TOPIC: trade-alerts
+      VOLUME_SPIKE_THRESHOLD: 80
+      VALUE_SPIKE_THRESHOLD: 15000.0
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: unless-stopped
+
   producer:
     build: .
     container_name: trade-producer

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Event Pipeline - Live Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --surface: #111827;
+            --surface-hover: #1f2937;
+            --border: #374151;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-yellow: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+
+        .title-block h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pulse-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .title-block p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .ticker-bar {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .ticker-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .tickers {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .ticker-item {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .ticker-symbol {
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .ticker-vwap {
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .card {
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 13px;
+            transition: transform 0.15s ease;
+        }
+
+        .card:hover {
+            transform: translateX(4px);
+        }
+
+        .card-success {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid var(--accent-green);
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            border-right: 1px solid rgba(16, 185, 129, 0.2);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .card-rejected {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid var(--accent-red);
+            border-top: 1px solid rgba(239, 68, 68, 0.2);
+            border-right: 1px solid rgba(239, 68, 68, 0.2);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .trade-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .badge-side {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .side-buy {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        .side-sell {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .card-details {
+            display: flex;
+            gap: 16px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .card-details span b {
+            color: var(--text-main);
+        }
+
+        .rejection-reason {
+            color: #fca5a5;
+            margin-top: 6px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 8px;
+            border-radius: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="title-block">
+            <h1><span class="pulse-dot"></span> Trade Event Pipeline &mdash; Live Mission Control</h1>
+            <p>Real-time Kafka Streaming, PostgreSQL Persistence, Anomaly Detection & DLQ Quarantine</p>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted);">
+            Auto-refreshing every 2s
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="label">Valid Trades (Postgres)</div>
+            <div class="value" style="color: var(--accent-green);" id="val-valid-count">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Quarantined (DLQ)</div>
+            <div class="value" style="color: var(--accent-red);" id="val-dlq-count">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Total Volume Traded</div>
+            <div class="value" style="color: var(--accent-blue);" id="val-total-vol">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Total Notional Value</div>
+            <div class="value" style="color: var(--accent-yellow);" id="val-total-val">$0.00</div>
+        </div>
+    </div>
+
+    <div class="ticker-bar">
+        <div class="ticker-title">Live Real-Time Volume-Weighted Average Price (VWAP) Ticker</div>
+        <div class="tickers" id="ticker-container">
+            <div class="empty-state" style="padding: 10px;">Waiting for trade stream...</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <!-- Valid Trades Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title" style="color: var(--accent-green);">
+                    <span>✔</span> Valid Trades in PostgreSQL
+                    <span class="badge-count" id="badge-valid">0</span>
+                </div>
+            </div>
+            <div class="card-list" id="valid-trades-list">
+                <div class="empty-state">No valid trades recorded yet. Run the producer to stream events.</div>
+            </div>
+        </div>
+
+        <!-- DLQ Rejected Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title" style="color: var(--accent-red);">
+                    <span>✖</span> Quarantined in Dead-Letter Queue (DLQ)
+                    <span class="badge-count" id="badge-dlq">0</span>
+                </div>
+            </div>
+            <div class="card-list" id="dlq-trades-list">
+                <div class="empty-state">No quarantined events. Pipeline is clean.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchDashboardData() {
+            try {
+                const res = await fetch('/api/dashboard');
+                if (!res.ok) return;
+                const data = await res.json();
+
+                // 1. Update stats
+                document.getElementById('val-valid-count').innerText = data.valid_trades.length;
+                document.getElementById('val-dlq-count').innerText = data.dlq_trades.length;
+                document.getElementById('badge-valid').innerText = data.valid_trades.length;
+                document.getElementById('badge-dlq').innerText = data.dlq_trades.length;
+
+                let totalVol = 0;
+                let totalVal = 0;
+                data.valid_trades.forEach(t => {
+                    totalVol += t.quantity;
+                    totalVal += (t.price * t.quantity);
+                });
+                document.getElementById('val-total-vol').innerText = totalVol.toLocaleString();
+                document.getElementById('val-total-val').innerText = '$' + totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+                // 2. Update Ticker / VWAP
+                const tickerBox = document.getElementById('ticker-container');
+                const vwapKeys = Object.keys(data.vwap_map || {});
+                if (vwapKeys.length > 0) {
+                    tickerBox.innerHTML = vwapKeys.map(sym => `
+                        <div class="ticker-item">
+                            <span class="ticker-symbol">${sym}</span>
+                            <span class="ticker-vwap">Latest: <b>$${data.vwap_map[sym].price.toFixed(2)}</b></span>
+                            <span class="ticker-vwap" style="color: #6ee7b7;">VWAP: <b>$${data.vwap_map[sym].vwap.toFixed(2)}</b></span>
+                            <span style="color: #94a3b8; font-size: 11px;">Vol: ${data.vwap_map[sym].volume}</span>
+                        </div>
+                    `).join('');
+                }
+
+                // 3. Render Valid Trades
+                const validList = document.getElementById('valid-trades-list');
+                if (data.valid_trades.length === 0) {
+                    validList.innerHTML = '<div class="empty-state">No valid trades recorded yet. Run the producer to stream events.</div>';
+                } else {
+                    validList.innerHTML = data.valid_trades.map(t => `
+                        <div class="card card-success">
+                            <div class="card-top">
+                                <span class="trade-id">${t.trade_id}</span>
+                                <span class="badge-side ${t.side === 'BUY' ? 'side-buy' : 'side-sell'}">${t.side}</span>
+                            </div>
+                            <div class="card-details">
+                                <span>Symbol: <b>${t.symbol}</b></span>
+                                <span>Qty: <b>${t.quantity}</b></span>
+                                <span>Price: <b>$${Number(t.price).toFixed(2)}</b></span>
+                                <span>Total: <b>$${(t.price * t.quantity).toFixed(2)}</b></span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                // 4. Render DLQ Trades
+                const dlqList = document.getElementById('dlq-trades-list');
+                if (data.dlq_trades.length === 0) {
+                    dlqList.innerHTML = '<div class="empty-state">No quarantined events. Pipeline is clean.</div>';
+                } else {
+                    dlqList.innerHTML = data.dlq_trades.map(q => `
+                        <div class="card card-rejected">
+                            <div class="card-top">
+                                <span class="trade-id">${q.key || 'UNKNOWN_KEY'}</span>
+                                <span class="badge-side side-sell">${q.error_type || 'REJECTED'}</span>
+                            </div>
+                            <div class="rejection-reason">${q.rejection_reason || 'Rejection reason unavailable'}</div>
+                            <div class="card-details" style="font-size: 11px; margin-top: 6px;">
+                                <span>Raw Payload: <code>${(q.raw_payload || '').substring(0, 60)}</code></span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("Dashboard refresh error:", err);
+            }
+        }
+
+        // Auto poll every 2 seconds
+        setInterval(fetchDashboardData, 2000);
+        fetchDashboardData();
+    </script>
+</body>
+</html>

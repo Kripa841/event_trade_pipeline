@@ -79,6 +79,23 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  dashboard:
+    build: .
+    container_name: trade-dashboard
+    command: python -m app.dashboard
+    ports:
+      - "8000:8000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_DLQ_TOPIC: trade-events-dlq
+      DATABASE_URL: postgresql+psycopg://trader:traderpass@postgres:5432/tradesdb
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   producer:
     build: .
     container_name: trade-producer

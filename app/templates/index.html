@@ -3,20 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Event Pipeline - Live Mission Control</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <title>Trade Stream • Bento Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0f19;
-            --surface: #111827;
-            --surface-hover: #1f2937;
-            --border: #374151;
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-blue: #3b82f6;
-            --accent-yellow: #f59e0b;
+            /* Palette: Deep Burgundy + Warm Ochre Yellow + Velvet Noir */
+            --bg: #140508;
+            --bg-glow: radial-gradient(circle at 15% 10%, rgba(94, 11, 26, 0.45), transparent 45%),
+                       radial-gradient(circle at 85% 85%, rgba(226, 178, 43, 0.12), transparent 40%);
+            --burgundy-deep: #1e090e;
+            --burgundy-card: #270c14;
+            --burgundy-border: #441421;
+            --burgundy-border-subtle: rgba(226, 178, 43, 0.15);
+            --burgundy-accent: #78142b;
+            --burgundy-accent-bright: #9e1b38;
+
+            --yellow-primary: #e2b22b;
+            --yellow-light: #fbe078;
+            --yellow-muted: rgba(226, 178, 43, 0.15);
+            --yellow-glow: rgba(226, 178, 43, 0.3);
+
+            --text-main: #fdf6ea;
+            --text-secondary: #c9b5a8;
+            --text-dim: #8b6e68;
+
+            --tag-valid-bg: rgba(226, 178, 43, 0.12);
+            --tag-valid-border: #e2b22b;
+            --tag-error-bg: rgba(158, 27, 56, 0.25);
+            --tag-error-border: #e11d48;
+
+            --radius-bento: 20px;
+            --radius-inner: 12px;
         }
 
         * {
@@ -26,337 +45,480 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg);
+            background-image: var(--bg-glow);
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
-            padding: 24px;
+            padding: 32px 28px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        header {
+        /* Nav & Brand */
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--burgundy-border);
         }
 
-        .title-block h1 {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+        .brand-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .pulse-dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--accent-green);
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--burgundy-accent-bright), var(--yellow-primary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 18px rgba(226, 178, 43, 0.25);
+            font-weight: 800;
+            color: var(--bg);
+            font-size: 20px;
+        }
+
+        .brand-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        .brand-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--burgundy-card);
+            border: 1px solid var(--burgundy-border);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--yellow-primary);
+        }
+
+        .pulse-yellow {
+            width: 8px;
+            height: 8px;
+            background-color: var(--yellow-primary);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-green);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px var(--yellow-primary);
+            animation: pulse 1.8s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
         }
 
-        .title-block p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .stats-grid {
+        /* BENTO MASTER GRID */
+        .bento-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 20px;
-        }
-
-        .stat-card .label {
-            color: var(--text-muted);
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 700;
-            margin-top: 8px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .ticker-bar {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-        }
-
-        .ticker-title {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-
-        .tickers {
-            display: flex;
+            grid-template-columns: repeat(12, 1fr);
             gap: 20px;
-            flex-wrap: wrap;
         }
 
-        .ticker-item {
-            background: #1e293b;
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: 'JetBrains Mono', monospace;
+        .bento-card {
+            background: var(--burgundy-card);
+            border: 1px solid var(--burgundy-border);
+            border-radius: var(--radius-bento);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            transition: border-color 0.2s ease, transform 0.2s ease;
         }
 
-        .ticker-symbol {
+        .bento-card:hover {
+            border-color: rgba(226, 178, 43, 0.35);
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--yellow-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .bento-card:hover::before {
+            opacity: 0.8;
+        }
+
+        /* Card Sizes */
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-12 { grid-column: span 12; }
+
+        @media (max-width: 1100px) {
+            .col-3 { grid-column: span 6; }
+            .col-4 { grid-column: span 6; }
+            .col-6 { grid-column: span 12; }
+            .col-8 { grid-column: span 12; }
+        }
+
+        @media (max-width: 700px) {
+            .col-3, .col-4 { grid-column: span 12; }
+        }
+
+        /* Metric Bento Item */
+        .metric-label {
+            font-size: 12px;
             font-weight: 700;
-            color: var(--accent-blue);
-        }
-
-        .ticker-vwap {
-            color: var(--text-main);
-            font-size: 14px;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        @media (max-width: 900px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .panel {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            min-height: 400px;
-        }
-
-        .panel-header {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -1px;
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: var(--yellow-primary);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Ticker Bento Row */
+        .ticker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 16px;
         }
 
-        .panel-title {
-            font-size: 16px;
+        .ticker-header h2 {
+            font-size: 15px;
             font-weight: 700;
+            color: var(--yellow-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .badge-count {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
+        .ticker-chips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
         }
 
-        .card-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 520px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .card {
-            border-radius: 8px;
-            padding: 14px 16px;
-            font-size: 13px;
-            transition: transform 0.15s ease;
-        }
-
-        .card:hover {
-            transform: translateX(4px);
-        }
-
-        .card-success {
-            background: rgba(16, 185, 129, 0.08);
-            border-left: 4px solid var(--accent-green);
-            border-top: 1px solid rgba(16, 185, 129, 0.2);
-            border-right: 1px solid rgba(16, 185, 129, 0.2);
-            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .card-rejected {
-            background: rgba(239, 68, 68, 0.08);
-            border-left: 4px solid var(--accent-red);
-            border-top: 1px solid rgba(239, 68, 68, 0.2);
-            border-right: 1px solid rgba(239, 68, 68, 0.2);
-            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .card-top {
+        .ticker-chip {
+            background: var(--burgundy-deep);
+            border: 1px solid var(--burgundy-border);
+            border-radius: var(--radius-inner);
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
         }
 
-        .trade-id {
-            font-family: 'JetBrains Mono', monospace;
+        .chip-symbol {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
             font-weight: 700;
+            color: var(--yellow-primary);
         }
 
-        .badge-side {
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 11px;
+        .chip-data {
+            text-align: right;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+        }
+
+        .chip-data .price {
+            font-size: 15px;
             font-weight: 700;
-        }
-
-        .side-buy {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--accent-green);
-        }
-
-        .side-sell {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--accent-red);
-        }
-
-        .card-details {
-            display: flex;
-            gap: 16px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .card-details span b {
             color: var(--text-main);
         }
 
-        .rejection-reason {
-            color: #fca5a5;
-            margin-top: 6px;
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 6px 8px;
+        .chip-data .vwap {
+            font-size: 11px;
+            color: var(--yellow-light);
+            opacity: 0.85;
+        }
+
+        /* Feeds: Valid vs DLQ */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--burgundy-border);
+        }
+
+        .feed-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feed-title.yellow { color: var(--yellow-primary); }
+        .feed-title.burgundy { color: #f43f5e; }
+
+        .tag-pill {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: var(--yellow-muted);
+            color: var(--yellow-primary);
+            border: 1px solid var(--burgundy-border);
+        }
+
+        .feed-scroll {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .feed-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .feed-scroll::-webkit-scrollbar-track {
+            background: var(--burgundy-deep);
+            border-radius: 4px;
+        }
+        .feed-scroll::-webkit-scrollbar-thumb {
+            background: var(--burgundy-accent);
             border-radius: 4px;
         }
 
-        .empty-state {
+        /* Trade Cards Inside Feed */
+        .bento-feed-card {
+            background: var(--burgundy-deep);
+            border: 1px solid var(--burgundy-border);
+            border-radius: var(--radius-inner);
+            padding: 14px 16px;
+            transition: all 0.15s ease;
+        }
+
+        .bento-feed-card:hover {
+            border-color: rgba(226, 178, 43, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .bento-feed-card.dlq {
+            border-left: 3px solid #f43f5e;
+        }
+
+        .bento-feed-card.valid {
+            border-left: 3px solid var(--yellow-primary);
+        }
+
+        .card-row-1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .card-id {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .side-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .side-badge.buy {
+            background: var(--yellow-muted);
+            color: var(--yellow-primary);
+            border: 1px solid rgba(226, 178, 43, 0.3);
+        }
+
+        .side-badge.sell {
+            background: rgba(120, 20, 43, 0.5);
+            color: #fca5a5;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        .card-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .card-stats strong {
+            color: var(--text-main);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .dlq-reason {
+            margin-top: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px dashed rgba(244, 63, 94, 0.4);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: #fecdd3;
+            line-height: 1.4;
+        }
+
+        .empty-placeholder {
             text-align: center;
-            color: var(--text-muted);
-            padding: 40px 0;
-            font-size: 14px;
+            padding: 40px 10px;
+            color: var(--text-dim);
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="title-block">
-            <h1><span class="pulse-dot"></span> Trade Event Pipeline &mdash; Live Mission Control</h1>
-            <p>Real-time Kafka Streaming, PostgreSQL Persistence, Anomaly Detection & DLQ Quarantine</p>
+    <!-- Top Nav -->
+    <header class="top-bar">
+        <div class="brand-group">
+            <div class="brand-icon">▲</div>
+            <div class="brand-text">
+                <h1>Trading Pipeline Studio</h1>
+                <p>Event-Driven Kafka Stream &bull; PostgreSQL Ledger &bull; Real-Time VWAP</p>
+            </div>
         </div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted);">
-            Auto-refreshing every 2s
+        <div class="status-pill">
+            <span class="pulse-yellow"></span>
+            <span>STREAM ACTIVE</span>
         </div>
     </header>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="label">Valid Trades (Postgres)</div>
-            <div class="value" style="color: var(--accent-green);" id="val-valid-count">0</div>
+    <!-- BENTO GRID -->
+    <main class="bento-grid">
+        <!-- KPI 1: Valid Trades -->
+        <div class="bento-card col-3">
+            <div class="metric-label">
+                <span>Committed to Ledger</span>
+                <span>●</span>
+            </div>
+            <div class="metric-value" style="color: var(--yellow-primary);" id="stat-valid">0</div>
+            <div class="metric-sub">PostgreSQL Primary Storage</div>
         </div>
-        <div class="stat-card">
-            <div class="label">Quarantined (DLQ)</div>
-            <div class="value" style="color: var(--accent-red);" id="val-dlq-count">0</div>
-        </div>
-        <div class="stat-card">
-            <div class="label">Total Volume Traded</div>
-            <div class="value" style="color: var(--accent-blue);" id="val-total-vol">0</div>
-        </div>
-        <div class="stat-card">
-            <div class="label">Total Notional Value</div>
-            <div class="value" style="color: var(--accent-yellow);" id="val-total-val">$0.00</div>
-        </div>
-    </div>
 
-    <div class="ticker-bar">
-        <div class="ticker-title">Live Real-Time Volume-Weighted Average Price (VWAP) Ticker</div>
-        <div class="tickers" id="ticker-container">
-            <div class="empty-state" style="padding: 10px;">Waiting for trade stream...</div>
+        <!-- KPI 2: DLQ Quarantined -->
+        <div class="bento-card col-3">
+            <div class="metric-label">
+                <span>Quarantined (DLQ)</span>
+                <span>▲</span>
+            </div>
+            <div class="metric-value" style="color: #f43f5e;" id="stat-dlq">0</div>
+            <div class="metric-sub">Kafka trade-events-dlq</div>
         </div>
-    </div>
 
-    <div class="content-grid">
-        <!-- Valid Trades Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <div class="panel-title" style="color: var(--accent-green);">
-                    <span>✔</span> Valid Trades in PostgreSQL
-                    <span class="badge-count" id="badge-valid">0</span>
+        <!-- KPI 3: Total Shares Traded -->
+        <div class="bento-card col-3">
+            <div class="metric-label">
+                <span>Cumulative Volume</span>
+                <span>■</span>
+            </div>
+            <div class="metric-value" id="stat-vol">0</div>
+            <div class="metric-sub">Total Traded Shares</div>
+        </div>
+
+        <!-- KPI 4: Total Value Traded -->
+        <div class="bento-card col-3">
+            <div class="metric-label">
+                <span>Notional Turnover</span>
+                <span>◆</span>
+            </div>
+            <div class="metric-value" style="color: var(--yellow-light);" id="stat-val">$0.00</div>
+            <div class="metric-sub">Gross Executed Capital</div>
+        </div>
+
+        <!-- BENTO ROW 2: VWAP Tickers -->
+        <div class="bento-card col-12">
+            <div class="ticker-header">
+                <h2><span>⚡</span> Real-Time Volume-Weighted Average Price (VWAP)</h2>
+                <span class="tag-pill">2s Streaming Sync</span>
+            </div>
+            <div class="ticker-chips" id="ticker-chips">
+                <div class="empty-placeholder">Listening for incoming market events on topic 'trade-events'...</div>
+            </div>
+        </div>
+
+        <!-- BENTO ROW 3: Left Feed (Valid Trades in Postgres) -->
+        <div class="bento-card col-6">
+            <div class="feed-header">
+                <div class="feed-title yellow">
+                    <span>✔</span> Persisted Orders
                 </div>
+                <span class="tag-pill" id="badge-valid-count">0 Recorded</span>
             </div>
-            <div class="card-list" id="valid-trades-list">
-                <div class="empty-state">No valid trades recorded yet. Run the producer to stream events.</div>
+            <div class="feed-scroll" id="valid-feed">
+                <div class="empty-placeholder">No trades in PostgreSQL yet. Run producer to stream events.</div>
             </div>
         </div>
 
-        <!-- DLQ Rejected Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <div class="panel-title" style="color: var(--accent-red);">
-                    <span>✖</span> Quarantined in Dead-Letter Queue (DLQ)
-                    <span class="badge-count" id="badge-dlq">0</span>
+        <!-- BENTO ROW 3: Right Feed (Dead-Letter Queue Quarantined) -->
+        <div class="bento-card col-6">
+            <div class="feed-header">
+                <div class="feed-title burgundy">
+                    <span>✖</span> Quarantined Events (DLQ)
                 </div>
+                <span class="tag-pill" style="color: #f43f5e;" id="badge-dlq-count">0 Rejected</span>
             </div>
-            <div class="card-list" id="dlq-trades-list">
-                <div class="empty-state">No quarantined events. Pipeline is clean.</div>
+            <div class="feed-scroll" id="dlq-feed">
+                <div class="empty-placeholder">No anomalies quarantined. Pipeline is clean.</div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        async function fetchDashboardData() {
+        async function refreshBento() {
             try {
-                const res = await fetch('/api/dashboard');
-                if (!res.ok) return;
-                const data = await res.json();
+                const response = await fetch('/api/dashboard');
+                if (!response.ok) return;
+                const data = await response.json();
 
-                // 1. Update stats
-                document.getElementById('val-valid-count').innerText = data.valid_trades.length;
-                document.getElementById('val-dlq-count').innerText = data.dlq_trades.length;
-                document.getElementById('badge-valid').innerText = data.valid_trades.length;
-                document.getElementById('badge-dlq').innerText = data.dlq_trades.length;
+                // 1. Update Metrics
+                document.getElementById('stat-valid').innerText = data.valid_trades.length;
+                document.getElementById('stat-dlq').innerText = data.dlq_trades.length;
+                document.getElementById('badge-valid-count').innerText = `${data.valid_trades.length} Recorded`;
+                document.getElementById('badge-dlq-count').innerText = `${data.dlq_trades.length} Quarantined`;
 
                 let totalVol = 0;
                 let totalVal = 0;
@@ -364,70 +526,67 @@
                     totalVol += t.quantity;
                     totalVal += (t.price * t.quantity);
                 });
-                document.getElementById('val-total-vol').innerText = totalVol.toLocaleString();
-                document.getElementById('val-total-val').innerText = '$' + totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('stat-vol').innerText = totalVol.toLocaleString();
+                document.getElementById('stat-val').innerText = '$' + totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-                // 2. Update Ticker / VWAP
-                const tickerBox = document.getElementById('ticker-container');
+                // 2. Tickers (VWAP)
+                const tickerChips = document.getElementById('ticker-chips');
                 const vwapKeys = Object.keys(data.vwap_map || {});
                 if (vwapKeys.length > 0) {
-                    tickerBox.innerHTML = vwapKeys.map(sym => `
-                        <div class="ticker-item">
-                            <span class="ticker-symbol">${sym}</span>
-                            <span class="ticker-vwap">Latest: <b>$${data.vwap_map[sym].price.toFixed(2)}</b></span>
-                            <span class="ticker-vwap" style="color: #6ee7b7;">VWAP: <b>$${data.vwap_map[sym].vwap.toFixed(2)}</b></span>
-                            <span style="color: #94a3b8; font-size: 11px;">Vol: ${data.vwap_map[sym].volume}</span>
+                    tickerChips.innerHTML = vwapKeys.map(sym => `
+                        <div class="ticker-chip">
+                            <span class="chip-symbol">${sym}</span>
+                            <div class="chip-data">
+                                <div class="price">$${data.vwap_map[sym].price.toFixed(2)}</div>
+                                <div class="vwap">VWAP: $${data.vwap_map[sym].vwap.toFixed(2)}</div>
+                            </div>
                         </div>
                     `).join('');
                 }
 
-                // 3. Render Valid Trades
-                const validList = document.getElementById('valid-trades-list');
+                // 3. Valid Feed
+                const validFeed = document.getElementById('valid-feed');
                 if (data.valid_trades.length === 0) {
-                    validList.innerHTML = '<div class="empty-state">No valid trades recorded yet. Run the producer to stream events.</div>';
+                    validFeed.innerHTML = '<div class="empty-placeholder">No trades in PostgreSQL yet. Run producer to stream events.</div>';
                 } else {
-                    validList.innerHTML = data.valid_trades.map(t => `
-                        <div class="card card-success">
-                            <div class="card-top">
-                                <span class="trade-id">${t.trade_id}</span>
-                                <span class="badge-side ${t.side === 'BUY' ? 'side-buy' : 'side-sell'}">${t.side}</span>
+                    validFeed.innerHTML = data.valid_trades.map(t => `
+                        <div class="bento-feed-card valid">
+                            <div class="card-row-1">
+                                <span class="card-id">${t.trade_id}</span>
+                                <span class="side-badge ${t.side.toLowerCase()}">${t.side}</span>
                             </div>
-                            <div class="card-details">
-                                <span>Symbol: <b>${t.symbol}</b></span>
-                                <span>Qty: <b>${t.quantity}</b></span>
-                                <span>Price: <b>$${Number(t.price).toFixed(2)}</b></span>
-                                <span>Total: <b>$${(t.price * t.quantity).toFixed(2)}</b></span>
+                            <div class="card-stats">
+                                <span>Symbol: <strong>${t.symbol}</strong></span>
+                                <span>Shares: <strong>${t.quantity}</strong></span>
+                                <span>Price: <strong>$${Number(t.price).toFixed(2)}</strong></span>
+                                <span>Turnover: <strong>$${(t.price * t.quantity).toFixed(2)}</strong></span>
                             </div>
                         </div>
                     `).join('');
                 }
 
-                // 4. Render DLQ Trades
-                const dlqList = document.getElementById('dlq-trades-list');
+                // 4. DLQ Feed
+                const dlqFeed = document.getElementById('dlq-feed');
                 if (data.dlq_trades.length === 0) {
-                    dlqList.innerHTML = '<div class="empty-state">No quarantined events. Pipeline is clean.</div>';
+                    dlqFeed.innerHTML = '<div class="empty-placeholder">No anomalies quarantined. Pipeline is clean.</div>';
                 } else {
-                    dlqList.innerHTML = data.dlq_trades.map(q => `
-                        <div class="card card-rejected">
-                            <div class="card-top">
-                                <span class="trade-id">${q.key || 'UNKNOWN_KEY'}</span>
-                                <span class="badge-side side-sell">${q.error_type || 'REJECTED'}</span>
+                    dlqFeed.innerHTML = data.dlq_trades.map(q => `
+                        <div class="bento-feed-card dlq">
+                            <div class="card-row-1">
+                                <span class="card-id">${q.key || 'MALFORMED_EVENT'}</span>
+                                <span class="side-badge sell">${q.error_type || 'REJECTED'}</span>
                             </div>
-                            <div class="rejection-reason">${q.rejection_reason || 'Rejection reason unavailable'}</div>
-                            <div class="card-details" style="font-size: 11px; margin-top: 6px;">
-                                <span>Raw Payload: <code>${(q.raw_payload || '').substring(0, 60)}</code></span>
-                            </div>
+                            <div class="dlq-reason">${q.rejection_reason || 'Rejection reason unavailable'}</div>
                         </div>
                     `).join('');
                 }
             } catch (err) {
-                console.error("Dashboard refresh error:", err);
+                console.error("Bento refresh error:", err);
             }
         }
 
-        // Auto poll every 2 seconds
-        setInterval(fetchDashboardData, 2000);
-        fetchDashboardData();
+        setInterval(refreshBento, 2000);
+        refreshBento();
     </script>
 </body>
 </html>

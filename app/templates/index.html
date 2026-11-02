@@ -3,669 +3,685 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>habitat • Trade Event Stream</title>
+    <title>habitat • Design your happy place</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            /* Warm Architectural / Editorial Palette from Habitat */
-            --bg-outer: #d8c3b9;
-            --bg-canvas: #f6f0ea;
-            --bg-card: #ffffff;
-            --bg-subtle: #ede3dc;
-            --rose-dust: #caa29a;
-            --rose-soft: #e5d4ce;
-            --burgundy-text: #4a1e27;
-            --burgundy-accent: #782635;
-            --terracotta: #b86253;
-            
-            --text-title: #2b2321;
-            --text-body: #615551;
-            --text-muted: #9c8983;
-
-            --border-soft: #e2d5cd;
-            --border-card: #eadfd7;
-            --yellow-accent: #d4a338;
-
-            --radius-outer: 28px;
-            --radius-inner: 16px;
-            --radius-pill: 999px;
-            --shadow-soft: 0 12px 35px rgba(97, 85, 81, 0.08);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        /* The Exact Warm Taupe Outer Background from the Screenshot */
         body {
+            background-color: #d1bbb0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-outer);
-            color: var(--text-body);
+            color: #554d4a;
             min-height: 100vh;
-            padding: 24px;
+            padding: 24px 32px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Outer Frame with Habitat curve */
-        .viewport-wrapper {
+        /* The Exact Rounded Browser Card with the Cutout Corners */
+        .window-frame {
             width: 100%;
-            max-width: 1380px;
-            background-color: var(--bg-canvas);
-            border-radius: var(--radius-outer);
+            max-width: 1360px;
+            background-color: #f7f1eb;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 25px 60px rgba(74, 30, 39, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 80px rgba(70, 50, 45, 0.22);
+            position: relative;
         }
 
-        /* Top Announcement Strip */
-        .top-strip {
-            background-color: var(--rose-dust);
+        /* Top Announcement Ribbon */
+        .top-banner {
+            background-color: #caa097;
             color: #ffffff;
-            padding: 10px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 1.5px;
+            padding: 10px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             text-transform: uppercase;
         }
 
-        .top-strip a {
-            color: #ffffff;
-            text-decoration: none;
-            display: inline-flex;
+        .top-banner .nav-link-strip {
+            display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            cursor: pointer;
         }
 
-        .top-strip .right-note {
-            opacity: 0.95;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 3px 12px;
-            border-radius: var(--radius-pill);
+        .top-banner .free-ship {
+            text-decoration: underline;
+            letter-spacing: 1px;
         }
 
-        /* Main Header & Editorial Brand */
-        header {
-            padding: 28px 40px 18px 40px;
+        /* Header Navigation */
+        .nav-header {
+            padding: 24px 48px 18px 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border-soft);
-            background-color: var(--bg-canvas);
+            background-color: #f7f1eb;
         }
 
-        .brand-container {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-        }
-
-        .brand-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 40px;
-            font-weight: 700;
-            color: var(--burgundy-text);
-            letter-spacing: -1px;
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: #38312e;
             text-decoration: none;
+            letter-spacing: -0.5px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .brand-logo .dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--yellow-accent);
-            border-radius: 50%;
-            display: inline-block;
+        .logo-tag {
+            font-size: 14px;
+            font-family: 'Space Mono', monospace;
+            opacity: 0.5;
+            vertical-align: super;
         }
 
-        .search-pill {
-            background: #ffffff;
-            border: 1px solid var(--border-soft);
-            border-radius: var(--radius-pill);
-            padding: 10px 22px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 380px;
-            color: var(--text-muted);
-            font-size: 13px;
+        .search-container {
+            flex: 1;
+            max-width: 440px;
+            margin: 0 40px;
+            position: relative;
         }
 
-        .search-pill input {
-            border: none;
-            outline: none;
+        .search-container input {
             width: 100%;
             background: transparent;
+            border: none;
+            border-bottom: 1px solid #d4c4ba;
+            padding: 8px 36px 8px 30px;
             font-family: inherit;
-            color: var(--text-title);
+            font-size: 13px;
+            color: #38312e;
+            outline: none;
         }
 
-        .nav-actions {
+        .search-container input::placeholder {
+            color: #9a8d86;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c7f78;
+            font-size: 14px;
+        }
+
+        .search-camera {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c7f78;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .header-icons {
             display: flex;
             align-items: center;
-            gap: 24px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--text-title);
+            gap: 28px;
         }
 
-        .nav-actions span {
+        .header-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #635852;
+            text-decoration: none;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
             cursor: pointer;
+        }
+
+        .header-icon-item .glyph {
+            font-size: 16px;
+        }
+
+        /* Category Nav */
+        .category-bar {
+            padding: 12px 48px 18px 48px;
+            display: flex;
+            gap: 28px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eaded6;
+        }
+
+        .category-bar a {
+            color: #6a5e58;
+            text-decoration: none;
             transition: color 0.2s;
         }
 
-        .nav-actions span:hover {
-            color: var(--burgundy-accent);
+        .category-bar a.sale {
+            color: #b5493d;
         }
 
-        /* Editorial Category Nav */
-        .category-nav {
-            padding: 14px 40px;
-            display: flex;
-            gap: 28px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-body);
-            border-bottom: 1px solid var(--border-soft);
-            background: rgba(255, 255, 255, 0.4);
+        .category-bar a:hover {
+            color: #b5493d;
         }
 
-        .category-nav .active-cat {
-            color: var(--burgundy-accent);
-            position: relative;
-        }
-
-        .category-nav .active-cat::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--burgundy-accent);
-        }
-
-        /* Hero Banner (Warm Split Aesthetic) */
-        .hero-banner {
+        /* Split Hero: Left Image + Right Editorial Title */
+        .hero-section {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            background: linear-gradient(135deg, var(--rose-soft) 0%, var(--bg-canvas) 100%);
-            border-bottom: 1px solid var(--border-soft);
-            overflow: hidden;
+            grid-template-columns: 1.2fr 0.8fr;
+            min-height: 480px;
+            position: relative;
+            background-color: #f7f1eb;
         }
 
-        .hero-content {
-            padding: 50px 48px;
+        /* Left side: Soft blush interior wall with 3 hanging pendant lights + sofa */
+        .hero-visual {
+            background: linear-gradient(180deg, #ddb9af 0%, #caa097 50%, #b88d85 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+        }
+
+        /* 3 Hanging Minimalist Pendant Lights */
+        .pendant-cluster {
+            position: absolute;
+            top: 0;
+            right: 18%;
+            display: flex;
+            gap: 16px;
+            z-index: 2;
+        }
+
+        .pendant-cord {
+            width: 1px;
+            background-color: #554440;
             display: flex;
             flex-direction: column;
+            align-items: center;
+        }
+
+        .cord-1 { height: 160px; }
+        .cord-2 { height: 130px; }
+        .cord-3 { height: 180px; }
+
+        .lamp-shade {
+            width: 22px;
+            height: 38px;
+            border-radius: 12px 12px 4px 4px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .shade-black { background: #2b2b2b; }
+        .shade-gold { background: linear-gradient(180deg, #dfb96f, #b98e40); }
+        .shade-grey { background: #687271; }
+
+        /* Plant on Left */
+        .monstera-plant {
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            width: 160px;
+            height: 280px;
+            background: radial-gradient(circle at 50% 60%, #46634c 0%, #2a3c2e 80%);
+            border-radius: 100px 100px 0 0;
+            opacity: 0.95;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Pink Ribbed Sofa Center */
+        .dusty-pink-sofa {
+            position: relative;
+            width: 70%;
+            height: 140px;
+            background: repeating-linear-gradient(90deg, #bb8d86, #bb8d86 10px, #b0817a 10px, #b0817a 14px);
+            border-radius: 30px 30px 10px 10px;
+            box-shadow: 0 20px 40px rgba(60, 35, 30, 0.25);
+            margin-left: 120px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
 
-        .hero-eyebrow {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            color: var(--burgundy-accent);
-            margin-bottom: 12px;
+        /* Coffee Table */
+        .round-table {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            width: 110px;
+            height: 50px;
+            background: #2b2b2b;
+            border-radius: 50%;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #dfb96f;
+            z-index: 4;
         }
 
-        .hero-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 48px;
+        /* Right Editorial Headline */
+        .hero-editorial {
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: #f7f1eb;
+        }
+
+        .editorial-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 58px;
             line-height: 1.08;
-            font-weight: 600;
-            color: var(--text-title);
-            margin-bottom: 16px;
-        }
-
-        .hero-desc {
-            font-size: 14px;
-            color: var(--text-body);
-            max-width: 480px;
-            line-height: 1.6;
+            color: #554d4a;
+            font-weight: 500;
             margin-bottom: 24px;
+            letter-spacing: -1px;
         }
 
-        .hero-stats-row {
+        .cta-shop {
+            font-size: 13px;
+            color: #635852;
+            text-decoration: underline;
+            text-underline-offset: 6px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            margin-bottom: 36px;
+        }
+
+        /* Live Metrics Strip embedded into the editorial section */
+        .metrics-strip {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            border-top: 1px solid #eaded6;
+            padding-top: 24px;
+        }
+
+        .metric-cell .num {
+            font-family: 'Space Mono', monospace;
+            font-size: 26px;
+            font-weight: 700;
+            color: #caa097;
+        }
+
+        .metric-cell .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8c7f78;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* VWAP Tickers Strip */
+        .ticker-row {
+            background-color: #eedcd6;
+            padding: 16px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #e5d1ca;
+            border-bottom: 1px solid #e5d1ca;
+        }
+
+        .ticker-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #8c7f78;
+        }
+
+        .ticker-list {
             display: flex;
             gap: 28px;
         }
 
-        .hero-stat-item {
-            border-left: 2px solid var(--rose-dust);
-            padding-left: 14px;
-        }
-
-        .hero-stat-item .val {
+        .ticker-item {
             font-family: 'Space Mono', monospace;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--burgundy-text);
+            font-size: 13px;
+            color: #554d4a;
         }
 
-        .hero-stat-item .lbl {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-top: 2px;
+        .ticker-item b {
+            color: #38312e;
         }
 
-        .hero-accent-panel {
-            background-color: var(--rose-dust);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            color: #ffffff;
-            position: relative;
-        }
-
-        .hero-accent-panel h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
-            font-weight: 600;
-            line-height: 1.2;
-        }
-
-        .accent-chips-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .accent-chip {
-            background: rgba(255, 255, 255, 0.22);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius-inner);
-            padding: 14px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .accent-chip .sym {
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 1px;
-        }
-
-        .accent-chip .data {
-            text-align: right;
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-        }
-
-        /* Main Workspace (Dual Bento in Muted Cream) */
-        .workspace {
-            padding: 40px;
+        /* Lower Data Bento Cards */
+        .bottom-section {
+            padding: 48px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 32px;
+            background-color: #f7f1eb;
         }
 
-        @media (max-width: 960px) {
-            .hero-banner { grid-template-columns: 1fr; }
-            .workspace { grid-template-columns: 1fr; }
-        }
-
-        .bento-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            border-radius: var(--radius-inner);
+        .table-panel {
+            background: #ffffff;
+            border-radius: 18px;
             padding: 28px;
-            box-shadow: var(--shadow-soft);
+            border: 1px solid #ede1d8;
+            box-shadow: 0 10px 30px rgba(70, 50, 45, 0.04);
         }
 
-        .section-header {
+        .panel-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #38312e;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-soft);
         }
 
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--burgundy-text);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pill-badge {
+        .pill-count {
             font-family: 'Space Mono', monospace;
             font-size: 11px;
+            color: #8c7f78;
+            background: #f7f1eb;
             padding: 3px 10px;
-            border-radius: var(--radius-pill);
-            font-weight: 700;
+            border-radius: 20px;
         }
 
-        .badge-ledger {
-            background: #fdf5ea;
-            color: var(--yellow-accent);
-            border: 1px solid rgba(212, 163, 56, 0.3);
-        }
-
-        .badge-quarantine {
-            background: #fbf0f0;
-            color: var(--terracotta);
-            border: 1px solid rgba(184, 98, 83, 0.25);
-        }
-
-        .card-stack {
+        .feed-container {
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            max-height: 480px;
+            gap: 12px;
+            max-height: 380px;
             overflow-y: auto;
             padding-right: 6px;
         }
 
-        .card-stack::-webkit-scrollbar { width: 5px; }
-        .card-stack::-webkit-scrollbar-track { background: var(--bg-subtle); border-radius: 4px; }
-        .card-stack::-webkit-scrollbar-thumb { background: var(--rose-dust); border-radius: 4px; }
-
-        .order-card {
-            background: #faf7f4;
-            border: 1px solid var(--border-soft);
+        .feed-card {
+            background: #fcfaf8;
+            border: 1px solid #f0e6df;
             border-radius: 12px;
-            padding: 16px 18px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            padding: 14px 16px;
         }
 
-        .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(97, 85, 81, 0.06);
-            background: #ffffff;
-        }
-
-        .order-card.quarantine {
-            border-left: 3px solid var(--terracotta);
-            background: #fffcfb;
-        }
-
-        .order-card.ledger {
-            border-left: 3px solid var(--burgundy-accent);
-        }
-
-        .card-header-row {
+        .card-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            margin-bottom: 6px;
         }
 
-        .card-id-text {
-            font-family: 'Space Mono', monospace;
+        .card-top .id {
             font-weight: 700;
-            font-size: 13px;
-            color: var(--burgundy-text);
+            color: #38312e;
         }
 
-        .side-chip {
-            font-family: 'Space Mono', monospace;
+        .side-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
             font-size: 10px;
             font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 4px;
-            text-transform: uppercase;
         }
 
-        .side-chip.buy {
-            background: rgba(74, 30, 39, 0.1);
-            color: var(--burgundy-accent);
-        }
+        .side-buy { background: #eedcd6; color: #caa097; }
+        .side-sell { background: #fbe6e4; color: #b5493d; }
 
-        .side-chip.sell {
-            background: rgba(184, 98, 83, 0.15);
-            color: var(--terracotta);
-        }
-
-        .card-body-specs {
-            display: flex;
-            gap: 18px;
+        .card-meta {
             font-size: 12px;
-            color: var(--text-body);
+            color: #7a6e68;
+            display: flex;
+            gap: 16px;
         }
 
-        .card-body-specs strong {
+        .card-meta strong {
+            color: #38312e;
             font-family: 'Space Mono', monospace;
-            color: var(--text-title);
         }
 
-        .dlq-pill-error {
-            margin-top: 10px;
-            background: #fbf1ef;
-            border: 1px solid rgba(184, 98, 83, 0.2);
-            border-radius: 8px;
-            padding: 8px 12px;
+        .dlq-box {
+            margin-top: 8px;
+            background: #fdf2f1;
+            border-left: 3px solid #b5493d;
+            padding: 8px 10px;
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: var(--terracotta);
-            line-height: 1.4;
-        }
-
-        .empty-placeholder {
-            text-align: center;
-            padding: 40px 10px;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-style: italic;
+            color: #b5493d;
+            border-radius: 0 6px 6px 0;
         }
     </style>
 </head>
 <body>
 
-<div class="viewport-wrapper">
-    <!-- Top Strip -->
-    <div class="top-strip">
-        <div>Event-Driven Architecture &bull; Kafka KRaft &bull; PostgreSQL</div>
-        <div class="right-note">Pipeline Status: Operational</div>
+<div class="window-frame">
+    <!-- Top Announcement Strip -->
+    <div class="top-banner">
+        <div class="nav-link-strip">
+            <span>NEW ARRIVALS | SHOP NOW</span>
+            <span>&rarr;</span>
+        </div>
+        <div class="free-ship">
+            Furniture Ships FREE*
+        </div>
     </div>
 
-    <!-- Header / Brand -->
-    <header>
-        <div class="brand-container">
-            <a href="#" class="brand-logo">habitat<span class="dot"></span></a>
+    <!-- Navigation Header -->
+    <header class="nav-header">
+        <a href="#" class="logo">
+            habitat <span class="logo-tag">&bull;</span>
+        </a>
+
+        <div class="search-container">
+            <span class="search-icon">&#9906;</span>
+            <input type="text" placeholder="Search for products or trade symbols..." readonly>
+            <span class="search-camera">&#9974;</span>
         </div>
-        <div class="search-pill">
-            <span>🔍</span>
-            <input type="text" placeholder="Search orders by trade ID or symbol..." readonly>
-            <span>⌘K</span>
-        </div>
-        <div class="nav-actions">
-            <span>Ledger</span>
-            <span>Analytics</span>
-            <span>Audit DLQ</span>
-            <span>EN/GB</span>
+
+        <div class="header-icons">
+            <div class="header-icon-item">
+                <span class="glyph">&#9786;</span>
+                <span>Account</span>
+            </div>
+            <div class="header-icon-item">
+                <span class="glyph">&#9873;</span>
+                <span>Showroom</span>
+            </div>
+            <div class="header-icon-item">
+                <span class="glyph">&#9825;</span>
+                <span>Lists</span>
+            </div>
+            <div class="header-icon-item">
+                <span class="glyph">&#128717;</span>
+                <span>Basket</span>
+            </div>
+            <div class="header-icon-item">
+                <span class="glyph">&#127468;&#127463;</span>
+                <span>EN/GB</span>
+            </div>
         </div>
     </header>
 
-    <!-- Category Bar -->
-    <div class="category-nav">
-        <span class="active-cat">Live Stream</span>
-        <span>Equities</span>
-        <span>VWAP Ticker</span>
-        <span>Kafka Topics</span>
-        <span>PostgreSQL</span>
-        <span>Dead-Letter Queue</span>
-        <span>Security</span>
+    <!-- Categories Nav Bar -->
+    <div class="category-bar">
+        <a href="#" class="sale">SALE</a>
+        <a href="#">NEW</a>
+        <a href="#">TABLES</a>
+        <a href="#">CHAIRS</a>
+        <a href="#">BEDS</a>
+        <a href="#">SOFAS</a>
+        <a href="#">LIFE&amp;STYLE</a>
+        <a href="#">ACCESSORIES</a>
+        <a href="#">LIGHTING</a>
+        <a href="#">HOME FURNISHINGS</a>
+        <a href="#">STORAGE</a>
     </div>
 
-    <!-- Editorial Hero Split (Inspired directly by the Habitat Interior Layout) -->
-    <div class="hero-banner">
-        <div class="hero-content">
-            <div class="hero-eyebrow">Financial Data Engineering</div>
-            <h2 class="hero-title">Design your<br>trading flow</h2>
-            <p class="hero-desc">
-                High-throughput trade event pipeline with automated validation, idempotent persistence, and quarantine routing for full regulatory compliance.
-            </p>
-            <div class="hero-stats-row">
-                <div class="hero-stat-item">
-                    <div class="val" id="kpi-valid">0</div>
-                    <div class="lbl">Committed Trades</div>
+    <!-- Asymmetric Split Hero Matching the Screenshot -->
+    <div class="hero-section">
+        <!-- Visual Left (Pink wall, 3 hanging pendants, sofa, monstera) -->
+        <div class="hero-visual">
+            <div class="pendant-cluster">
+                <div class="pendant-cord cord-1">
+                    <div class="lamp-shade shade-black"></div>
                 </div>
-                <div class="hero-stat-item">
-                    <div class="val" id="kpi-dlq" style="color: var(--terracotta);">0</div>
-                    <div class="lbl">Quarantined DLQ</div>
+                <div class="pendant-cord cord-2">
+                    <div class="lamp-shade shade-gold"></div>
                 </div>
-                <div class="hero-stat-item">
-                    <div class="val" id="kpi-volume">0</div>
-                    <div class="lbl">Total Shares</div>
-                </div>
-                <div class="hero-stat-item">
-                    <div class="val" id="kpi-turnover" style="color: var(--yellow-accent);">$0.00</div>
-                    <div class="lbl">Gross Turnover</div>
+                <div class="pendant-cord cord-3">
+                    <div class="lamp-shade shade-grey"></div>
                 </div>
             </div>
+
+            <div class="monstera-plant"></div>
+            <div class="dusty-pink-sofa"></div>
+            <div class="round-table"></div>
         </div>
 
-        <!-- Right Accent Block for Live Real-Time VWAP -->
-        <div class="hero-accent-panel">
-            <div>
-                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; margin-bottom: 6px;">Live Analytics Stream</div>
-                <h3>Volume-Weighted<br>Average Price</h3>
-            </div>
-            <div class="accent-chips-grid" id="vwap-chips">
-                <div class="empty-placeholder" style="color: #ffffff; opacity: 0.85;">Awaiting live market events from Kafka...</div>
-            </div>
-            <div style="font-size: 11px; opacity: 0.85; font-family: 'Space Mono', monospace;">
-                Stream polling active &bull; Auto-sync 2.0s
+        <!-- Editorial Right ("Design your happy place") -->
+        <div class="hero-editorial">
+            <h1 class="editorial-headline">Design your<br>happy place</h1>
+            <a class="cta-shop">Shop Now</a>
+
+            <div class="metrics-strip">
+                <div class="metric-cell">
+                    <div class="num" id="stat-valid">0</div>
+                    <div class="label">Committed Trades</div>
+                </div>
+                <div class="metric-cell">
+                    <div class="num" style="color: #b5493d;" id="stat-dlq">0</div>
+                    <div class="label">Quarantined (DLQ)</div>
+                </div>
+                <div class="metric-cell">
+                    <div class="num" id="stat-vol">0</div>
+                    <div class="label">Volume Traded</div>
+                </div>
+                <div class="metric-cell">
+                    <div class="num" id="stat-val">$0.00</div>
+                    <div class="label">Turnover (USD)</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Workspace (Dual Feed in Habitat Warm Tones) -->
-    <main class="workspace">
-        <!-- Left: Valid Ledger -->
-        <div class="bento-section">
-            <div class="section-header">
-                <h3 class="section-title">
-                    <span>◈</span> Confirmed in PostgreSQL
-                </h3>
-                <span class="pill-badge badge-ledger" id="badge-ledger-count">0 Recorded</span>
+    <!-- Real-time VWAP Ticker Strip -->
+    <div class="ticker-row">
+        <div class="ticker-title">Live Market Ticker (VWAP)</div>
+        <div class="ticker-list" id="ticker-list">
+            <span style="color: #9a8d86; font-size: 12px; font-style: italic;">Awaiting Kafka stream events...</span>
+        </div>
+    </div>
+
+    <!-- Lower Data Feeds -->
+    <div class="bottom-section">
+        <div class="table-panel">
+            <div class="panel-heading">
+                <span>Committed to Ledger</span>
+                <span class="pill-count" id="count-valid">0</span>
             </div>
-            <div class="card-stack" id="feed-ledger">
-                <div class="empty-placeholder">No confirmed orders yet. Run producer to stream events.</div>
+            <div class="feed-container" id="valid-feed">
+                <div style="text-align: center; color: #9a8d86; padding: 40px 0; font-size: 13px;">No orders stored yet. Run producer.</div>
             </div>
         </div>
 
-        <!-- Right: DLQ Quarantine -->
-        <div class="bento-section">
-            <div class="section-header">
-                <h3 class="section-title">
-                    <span>◇</span> Quarantined in Dead-Letter Queue
-                </h3>
-                <span class="pill-badge badge-quarantine" id="badge-dlq-count">0 Quarantined</span>
+        <div class="table-panel">
+            <div class="panel-heading">
+                <span style="color: #b5493d;">Quarantined in DLQ</span>
+                <span class="pill-count" id="count-dlq">0</span>
             </div>
-            <div class="card-stack" id="feed-dlq">
-                <div class="empty-placeholder">No anomalies quarantined. Pipeline is clean.</div>
+            <div class="feed-container" id="dlq-feed">
+                <div style="text-align: center; color: #9a8d86; padding: 40px 0; font-size: 13px;">No rejected orders in DLQ.</div>
             </div>
         </div>
-    </main>
+    </div>
 </div>
 
 <script>
-    async function syncHabitatDashboard() {
+    async function updateView() {
         try {
             const res = await fetch('/api/dashboard');
             if (!res.ok) return;
             const data = await res.json();
 
-            // 1. KPIs
-            document.getElementById('kpi-valid').innerText = data.valid_trades.length;
-            document.getElementById('kpi-dlq').innerText = data.dlq_trades.length;
-            document.getElementById('badge-ledger-count').innerText = `${data.valid_trades.length} Recorded`;
-            document.getElementById('badge-dlq-count').innerText = `${data.dlq_trades.length} Quarantined`;
+            // 1. Stats
+            document.getElementById('stat-valid').innerText = data.valid_trades.length;
+            document.getElementById('stat-dlq').innerText = data.dlq_trades.length;
+            document.getElementById('count-valid').innerText = `${data.valid_trades.length} Records`;
+            document.getElementById('count-dlq').innerText = `${data.dlq_trades.length} Quarantined`;
 
-            let totalVol = 0;
-            let totalVal = 0;
+            let vol = 0;
+            let val = 0;
             data.valid_trades.forEach(t => {
-                totalVol += t.quantity;
-                totalVal += (t.price * t.quantity);
+                vol += t.quantity;
+                val += (t.price * t.quantity);
             });
-            document.getElementById('kpi-volume').innerText = totalVol.toLocaleString();
-            document.getElementById('kpi-turnover').innerText = '$' + totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('stat-vol').innerText = vol.toLocaleString();
+            document.getElementById('stat-val').innerText = '$' + val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-            // 2. VWAP Accent Chips
-            const vwapChips = document.getElementById('vwap-chips');
-            const vwapKeys = Object.keys(data.vwap_map || {});
-            if (vwapKeys.length > 0) {
-                vwapChips.innerHTML = vwapKeys.map(sym => `
-                    <div class="accent-chip">
-                        <span class="sym">${sym}</span>
-                        <div class="data">
-                            <div>Price: <b>$${data.vwap_map[sym].price.toFixed(2)}</b></div>
-                            <div style="opacity: 0.9;">VWAP: <b>$${data.vwap_map[sym].vwap.toFixed(2)}</b></div>
-                        </div>
+            // 2. Tickers
+            const tickerBox = document.getElementById('ticker-list');
+            const keys = Object.keys(data.vwap_map || {});
+            if (keys.length > 0) {
+                tickerBox.innerHTML = keys.map(k => `
+                    <div class="ticker-item">
+                        <b>${k}</b>: $${data.vwap_map[k].price.toFixed(2)} &bull; <span style="color: #caa097;">VWAP: $${data.vwap_map[k].vwap.toFixed(2)}</span>
                     </div>
                 `).join('');
             }
 
-            // 3. Ledger Feed
-            const feedLedger = document.getElementById('feed-ledger');
-            if (data.valid_trades.length === 0) {
-                feedLedger.innerHTML = '<div class="empty-placeholder">No confirmed orders yet. Run producer to stream events.</div>';
-            } else {
-                feedLedger.innerHTML = data.valid_trades.map(t => `
-                    <div class="order-card ledger">
-                        <div class="card-header-row">
-                            <span class="card-id-text">${t.trade_id}</span>
-                            <span class="side-chip ${t.side.toLowerCase()}">${t.side}</span>
+            // 3. Valid Feed
+            const validBox = document.getElementById('valid-feed');
+            if (data.valid_trades.length > 0) {
+                validBox.innerHTML = data.valid_trades.map(t => `
+                    <div class="feed-card">
+                        <div class="card-top">
+                            <span class="id">${t.trade_id}</span>
+                            <span class="side-tag ${t.side === 'BUY' ? 'side-buy' : 'side-sell'}">${t.side}</span>
                         </div>
-                        <div class="card-body-specs">
-                            <span>Symbol: <strong>${t.symbol}</strong></span>
-                            <span>Shares: <strong>${t.quantity}</strong></span>
+                        <div class="card-meta">
+                            <span>Sym: <strong>${t.symbol}</strong></span>
+                            <span>Qty: <strong>${t.quantity}</strong></span>
                             <span>Price: <strong>$${Number(t.price).toFixed(2)}</strong></span>
-                            <span>Turnover: <strong>$${(t.price * t.quantity).toFixed(2)}</strong></span>
                         </div>
                     </div>
                 `).join('');
             }
 
             // 4. DLQ Feed
-            const feedDlq = document.getElementById('feed-dlq');
-            if (data.dlq_trades.length === 0) {
-                feedDlq.innerHTML = '<div class="empty-placeholder">No anomalies quarantined. Pipeline is clean.</div>';
-            } else {
-                feedDlq.innerHTML = data.dlq_trades.map(q => `
-                    <div class="order-card quarantine">
-                        <div class="card-header-row">
-                            <span class="card-id-text">${q.key || 'MALFORMED_EVENT'}</span>
-                            <span class="side-chip sell">${q.error_type || 'REJECTED'}</span>
+            const dlqBox = document.getElementById('dlq-feed');
+            if (data.dlq_trades.length > 0) {
+                dlqBox.innerHTML = data.dlq_trades.map(q => `
+                    <div class="feed-card">
+                        <div class="card-top">
+                            <span class="id">${q.key || 'MALFORMED'}</span>
+                            <span class="side-tag side-sell">${q.error_type || 'REJECTED'}</span>
                         </div>
-                        <div class="dlq-pill-error">${q.rejection_reason || 'Rejection reason unavailable'}</div>
+                        <div class="dlq-box">${q.rejection_reason || 'Rejection reason unavailable'}</div>
                     </div>
                 `).join('');
             }
-        } catch (err) {
-            console.error("Habitat sync error:", err);
+        } catch (e) {
+            console.error(e);
         }
     }
 
-    setInterval(syncHabitatDashboard, 2000);
-    syncHabitatDashboard();
+    setInterval(updateView, 2000);
+    updateView();
 </script>
 </body>
 </html>

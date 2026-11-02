@@ -108,5 +108,19 @@ services:
         condition: service_healthy
     profiles: ["tools"]
 
+  interactive:
+    build: .
+    container_name: trade-interactive
+    stdin_open: true
+    tty: true
+    command: python -m app.interactive_producer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: trade-events
+    depends_on:
+      kafka:
+        condition: service_healthy
+    profiles: ["tools"]
+
 volumes:
   postgres_data:

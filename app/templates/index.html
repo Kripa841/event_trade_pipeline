@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>habitat • Design your happy place</title>
+    <title>Velvet & Ochre • Trade Event Pipeline</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -14,11 +14,36 @@
             padding: 0;
         }
 
-        /* The Exact Warm Taupe Outer Background from the Screenshot */
+        :root {
+            /* Warm Editorial Palette inspired by the reference photo */
+            --bg-canvas: #d6bfb5;
+            --surface-cream: #faf5ef;
+            --card-white: #ffffff;
+            --dusty-rose: #caa097;
+            --rose-muted: #e7d8d2;
+            --burgundy-deep: #441c24;
+            --burgundy-accent: #6f2633;
+            --ochre-gold: #c8963e;
+            --ochre-light: #f4e8cf;
+            --crimson-soft: #b2483d;
+            --crimson-bg: #faefed;
+            
+            --text-dark: #2d2624;
+            --text-body: #615551;
+            --text-muted: #95857f;
+            --border-subtle: #eadfd7;
+            --border-strong: #d8c8bf;
+
+            --radius-bento: 20px;
+            --radius-inner: 12px;
+            --radius-pill: 999px;
+            --shadow-bento: 0 10px 30px rgba(68, 28, 36, 0.06);
+        }
+
         body {
-            background-color: #d1bbb0;
+            background-color: var(--bg-canvas);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #554d4a;
+            color: var(--text-body);
             min-height: 100vh;
             padding: 24px 32px;
             display: flex;
@@ -27,661 +52,612 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* The Exact Rounded Browser Card with the Cutout Corners */
-        .window-frame {
+        .bento-canvas {
             width: 100%;
-            max-width: 1360px;
-            background-color: #f7f1eb;
+            max-width: 1380px;
+            background-color: var(--surface-cream);
             border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(70, 50, 45, 0.22);
-            position: relative;
+            padding: 32px 36px 48px 36px;
+            box-shadow: 0 25px 70px rgba(68, 28, 36, 0.16);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        /* Top Announcement Ribbon */
-        .top-banner {
-            background-color: #caa097;
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            padding: 10px 48px;
+        /* Top Navigation Header */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            text-transform: uppercase;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .top-banner .nav-link-strip {
+        .brand-title-wrap {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
+            align-items: baseline;
+            gap: 12px;
         }
 
-        .top-banner .free-ship {
-            text-decoration: underline;
-            letter-spacing: 1px;
-        }
-
-        /* Header Navigation */
-        .nav-header {
-            padding: 24px 48px 18px 48px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f7f1eb;
-        }
-
-        .logo {
+        .brand-title {
             font-family: 'Playfair Display', serif;
-            font-size: 38px;
+            font-size: 32px;
             font-weight: 600;
-            color: #38312e;
-            text-decoration: none;
+            color: var(--burgundy-deep);
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .logo-tag {
-            font-size: 14px;
-            font-family: 'Space Mono', monospace;
-            opacity: 0.5;
-            vertical-align: super;
+        .brand-title .dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--ochre-gold);
+            border-radius: 50%;
+            display: inline-block;
         }
 
-        .search-container {
-            flex: 1;
-            max-width: 440px;
-            margin: 0 40px;
-            position: relative;
-        }
-
-        .search-container input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #d4c4ba;
-            padding: 8px 36px 8px 30px;
-            font-family: inherit;
+        .brand-subtitle {
             font-size: 13px;
-            color: #38312e;
-            outline: none;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        .search-container input::placeholder {
-            color: #9a8d86;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8c7f78;
-            font-size: 14px;
-        }
-
-        .search-camera {
-            position: absolute;
-            right: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8c7f78;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .header-icons {
+        .stream-status-pill {
             display: flex;
             align-items: center;
-            gap: 28px;
-        }
-
-        .header-icon-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: #635852;
-            text-decoration: none;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            cursor: pointer;
-        }
-
-        .header-icon-item .glyph {
-            font-size: 16px;
-        }
-
-        /* Category Nav */
-        .category-bar {
-            padding: 12px 48px 18px 48px;
-            display: flex;
-            gap: 28px;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            padding: 7px 16px;
+            border-radius: var(--radius-pill);
+            font-family: 'Space Mono', monospace;
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #eaded6;
+            color: var(--burgundy-deep);
+            box-shadow: 0 2px 8px rgba(68, 28, 36, 0.04);
         }
 
-        .category-bar a {
-            color: #6a5e58;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .category-bar a.sale {
-            color: #b5493d;
-        }
-
-        .category-bar a:hover {
-            color: #b5493d;
-        }
-
-        /* Split Hero: Left Image + Right Editorial Title */
-        .hero-section {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            min-height: 480px;
-            position: relative;
-            background-color: #f7f1eb;
-        }
-
-        /* Left side: Soft blush interior wall with 3 hanging pendant lights + sofa */
-        .hero-visual {
-            background: linear-gradient(180deg, #ddb9af 0%, #caa097 50%, #b88d85 100%);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            padding: 40px;
-        }
-
-        /* 3 Hanging Minimalist Pendant Lights */
-        .pendant-cluster {
-            position: absolute;
-            top: 0;
-            right: 18%;
-            display: flex;
-            gap: 16px;
-            z-index: 2;
-        }
-
-        .pendant-cord {
-            width: 1px;
-            background-color: #554440;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .cord-1 { height: 160px; }
-        .cord-2 { height: 130px; }
-        .cord-3 { height: 180px; }
-
-        .lamp-shade {
-            width: 22px;
-            height: 38px;
-            border-radius: 12px 12px 4px 4px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-        }
-
-        .shade-black { background: #2b2b2b; }
-        .shade-gold { background: linear-gradient(180deg, #dfb96f, #b98e40); }
-        .shade-grey { background: #687271; }
-
-        /* Plant on Left */
-        .monstera-plant {
-            position: absolute;
-            bottom: 0;
-            left: 20px;
-            width: 160px;
-            height: 280px;
-            background: radial-gradient(circle at 50% 60%, #46634c 0%, #2a3c2e 80%);
-            border-radius: 100px 100px 0 0;
-            opacity: 0.95;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        /* Pink Ribbed Sofa Center */
-        .dusty-pink-sofa {
-            position: relative;
-            width: 70%;
-            height: 140px;
-            background: repeating-linear-gradient(90deg, #bb8d86, #bb8d86 10px, #b0817a 10px, #b0817a 14px);
-            border-radius: 30px 30px 10px 10px;
-            box-shadow: 0 20px 40px rgba(60, 35, 30, 0.25);
-            margin-left: 120px;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Coffee Table */
-        .round-table {
-            position: absolute;
-            bottom: 15px;
-            right: 40px;
-            width: 110px;
-            height: 50px;
-            background: #2b2b2b;
+        .pulse-ochre {
+            width: 8px;
+            height: 8px;
+            background: var(--ochre-gold);
             border-radius: 50%;
-            box-shadow: 0 12px 20px rgba(0,0,0,0.3);
-            border-bottom: 3px solid #dfb96f;
-            z-index: 4;
+            box-shadow: 0 0 8px var(--ochre-gold);
+            animation: pulse 1.8s infinite;
         }
 
-        /* Right Editorial Headline */
-        .hero-editorial {
-            padding: 80px 60px;
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        /* MASTER BENTO GRID */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .bento-tile {
+            background-color: var(--card-white);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-bento);
+            padding: 24px;
+            box-shadow: var(--shadow-bento);
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            background-color: #f7f1eb;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .editorial-headline {
-            font-family: 'Playfair Display', serif;
-            font-size: 58px;
-            line-height: 1.08;
-            color: #554d4a;
-            font-weight: 500;
-            margin-bottom: 24px;
+        .bento-tile:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+        }
+
+        /* Bento Grid Tile Spans */
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-12 { grid-column: span 12; }
+
+        @media (max-width: 1024px) {
+            .col-3 { grid-column: span 6; }
+            .col-6 { grid-column: span 12; }
+            .col-8 { grid-column: span 12; }
+        }
+
+        @media (max-width: 680px) {
+            .col-3, .col-4 { grid-column: span 12; }
+        }
+
+        /* Metric Tile Styling */
+        .metric-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-digit {
+            font-family: 'Space Mono', monospace;
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--burgundy-deep);
+            margin: 12px 0 4px 0;
             letter-spacing: -1px;
         }
 
-        .cta-shop {
+        .metric-caption {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Featured Rose Hero Bento (Warm dusty rose accent block) */
+        .bento-rose-hero {
+            background: linear-gradient(135deg, var(--dusty-rose) 0%, #ba8e85 100%);
+            border: none;
+            color: #ffffff;
+            padding: 32px;
+        }
+
+        .bento-rose-hero:hover {
+            border-color: transparent;
+        }
+
+        .hero-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 600;
+            line-height: 1.15;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
             font-size: 13px;
-            color: #635852;
-            text-decoration: underline;
-            text-underline-offset: 6px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 480px;
+            margin-bottom: 24px;
+        }
+
+        .hero-pills-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-feature-pill {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-pill);
+            padding: 6px 14px;
+            font-size: 11px;
             font-weight: 600;
             letter-spacing: 0.5px;
-            cursor: pointer;
-            margin-bottom: 36px;
+            color: #ffffff;
         }
 
-        /* Live Metrics Strip embedded into the editorial section */
-        .metrics-strip {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            border-top: 1px solid #eaded6;
-            padding-top: 24px;
+        /* Ticker Bento Banner */
+        .ticker-bento {
+            background: #fbf7f2;
+            border: 1px solid var(--border-subtle);
+            padding: 20px 24px;
         }
 
-        .metric-cell .num {
-            font-family: 'Space Mono', monospace;
-            font-size: 26px;
-            font-weight: 700;
-            color: #caa097;
-        }
-
-        .metric-cell .label {
+        .ticker-bento-title {
             font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8c7f78;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        /* VWAP Tickers Strip */
-        .ticker-row {
-            background-color: #eedcd6;
-            padding: 16px 48px;
+            letter-spacing: 1.2px;
+            color: var(--burgundy-deep);
+            margin-bottom: 14px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            border-top: 1px solid #e5d1ca;
-            border-bottom: 1px solid #e5d1ca;
+            align-items: center;
         }
 
-        .ticker-title {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #8c7f78;
-        }
-
-        .ticker-list {
-            display: flex;
-            gap: 28px;
-        }
-
-        .ticker-item {
-            font-family: 'Space Mono', monospace;
-            font-size: 13px;
-            color: #554d4a;
-        }
-
-        .ticker-item b {
-            color: #38312e;
-        }
-
-        /* Lower Data Bento Cards */
-        .bottom-section {
-            padding: 48px;
+        .ticker-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-            background-color: #f7f1eb;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
         }
 
-        .table-panel {
+        .ticker-card {
             background: #ffffff;
-            border-radius: 18px;
-            padding: 28px;
-            border: 1px solid #ede1d8;
-            box-shadow: 0 10px 30px rgba(70, 50, 45, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-inner);
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(68, 28, 36, 0.03);
         }
 
-        .panel-heading {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 600;
-            color: #38312e;
-            margin-bottom: 20px;
+        .ticker-symbol {
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--burgundy-deep);
+        }
+
+        .ticker-data {
+            text-align: right;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ticker-data .price {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .ticker-data .vwap {
+            color: var(--ochre-gold);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* Feed Panels */
+        .feed-bento {
+            padding: 26px;
+            min-height: 440px;
+        }
+
+        .feed-heading-row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .pill-count {
+        .feed-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--burgundy-deep);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-pill {
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: #8c7f78;
-            background: #f7f1eb;
             padding: 3px 10px;
-            border-radius: 20px;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
         }
 
-        .feed-container {
+        .badge-valid {
+            background: var(--ochre-light);
+            color: var(--ochre-gold);
+            border: 1px solid rgba(200, 150, 62, 0.25);
+        }
+
+        .badge-dlq {
+            background: var(--crimson-bg);
+            color: var(--crimson-soft);
+            border: 1px solid rgba(178, 72, 61, 0.2);
+        }
+
+        .feed-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 380px;
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 6px;
         }
 
-        .feed-card {
-            background: #fcfaf8;
-            border: 1px solid #f0e6df;
+        .feed-list::-webkit-scrollbar { width: 5px; }
+        .feed-list::-webkit-scrollbar-track { background: var(--surface-cream); border-radius: 4px; }
+        .feed-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+        .feed-entry {
+            background: #faf6f1;
+            border: 1px solid var(--border-subtle);
             border-radius: 12px;
             padding: 14px 16px;
+            transition: all 0.15s ease;
         }
 
-        .card-top {
+        .feed-entry:hover {
+            background: #ffffff;
+            border-color: var(--border-strong);
+            transform: translateX(3px);
+            box-shadow: 0 6px 16px rgba(68, 28, 36, 0.05);
+        }
+
+        .feed-entry.valid-entry {
+            border-left: 3px solid var(--ochre-gold);
+        }
+
+        .feed-entry.dlq-entry {
+            border-left: 3px solid var(--crimson-soft);
+        }
+
+        .entry-top {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
             font-family: 'Space Mono', monospace;
             font-size: 12px;
-            margin-bottom: 6px;
         }
 
-        .card-top .id {
+        .entry-id {
             font-weight: 700;
-            color: #38312e;
+            color: var(--burgundy-deep);
         }
 
-        .side-tag {
-            padding: 2px 8px;
+        .side-chip {
+            padding: 2px 7px;
             border-radius: 4px;
             font-size: 10px;
             font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
-        .side-buy { background: #eedcd6; color: #caa097; }
-        .side-sell { background: #fbe6e4; color: #b5493d; }
+        .side-buy {
+            background: var(--ochre-light);
+            color: var(--ochre-gold);
+        }
 
-        .card-meta {
-            font-size: 12px;
-            color: #7a6e68;
+        .side-sell {
+            background: var(--crimson-bg);
+            color: var(--crimson-soft);
+        }
+
+        .entry-details {
             display: flex;
             gap: 16px;
+            font-size: 12px;
+            color: var(--text-body);
         }
 
-        .card-meta strong {
-            color: #38312e;
+        .entry-details strong {
             font-family: 'Space Mono', monospace;
+            color: var(--text-dark);
         }
 
-        .dlq-box {
+        .dlq-reason-box {
             margin-top: 8px;
-            background: #fdf2f1;
-            border-left: 3px solid #b5493d;
+            background: #ffffff;
+            border: 1px dashed rgba(178, 72, 61, 0.35);
+            border-radius: 6px;
             padding: 8px 10px;
             font-family: 'Space Mono', monospace;
             font-size: 11px;
-            color: #b5493d;
-            border-radius: 0 6px 6px 0;
+            color: var(--crimson-soft);
+            line-height: 1.4;
+        }
+
+        .empty-hint {
+            text-align: center;
+            padding: 40px 10px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
-<div class="window-frame">
-    <!-- Top Announcement Strip -->
-    <div class="top-banner">
-        <div class="nav-link-strip">
-            <span>NEW ARRIVALS | SHOP NOW</span>
-            <span>&rarr;</span>
+<div class="bento-canvas">
+    <!-- Header -->
+    <header>
+        <div class="brand-title-wrap">
+            <h1 class="brand-title">Trade Event Pipeline<span class="dot"></span></h1>
+            <span class="brand-subtitle">Kafka Streaming &bull; PostgreSQL Ledger &bull; Real-Time Analytics</span>
         </div>
-        <div class="free-ship">
-            Furniture Ships FREE*
-        </div>
-    </div>
-
-    <!-- Navigation Header -->
-    <header class="nav-header">
-        <a href="#" class="logo">
-            habitat <span class="logo-tag">&bull;</span>
-        </a>
-
-        <div class="search-container">
-            <span class="search-icon">&#9906;</span>
-            <input type="text" placeholder="Search for products or trade symbols..." readonly>
-            <span class="search-camera">&#9974;</span>
-        </div>
-
-        <div class="header-icons">
-            <div class="header-icon-item">
-                <span class="glyph">&#9786;</span>
-                <span>Account</span>
-            </div>
-            <div class="header-icon-item">
-                <span class="glyph">&#9873;</span>
-                <span>Showroom</span>
-            </div>
-            <div class="header-icon-item">
-                <span class="glyph">&#9825;</span>
-                <span>Lists</span>
-            </div>
-            <div class="header-icon-item">
-                <span class="glyph">&#128717;</span>
-                <span>Basket</span>
-            </div>
-            <div class="header-icon-item">
-                <span class="glyph">&#127468;&#127463;</span>
-                <span>EN/GB</span>
-            </div>
+        <div class="stream-status-pill">
+            <span class="pulse-ochre"></span>
+            <span>STREAM LIVE</span>
         </div>
     </header>
 
-    <!-- Categories Nav Bar -->
-    <div class="category-bar">
-        <a href="#" class="sale">SALE</a>
-        <a href="#">NEW</a>
-        <a href="#">TABLES</a>
-        <a href="#">CHAIRS</a>
-        <a href="#">BEDS</a>
-        <a href="#">SOFAS</a>
-        <a href="#">LIFE&amp;STYLE</a>
-        <a href="#">ACCESSORIES</a>
-        <a href="#">LIGHTING</a>
-        <a href="#">HOME FURNISHINGS</a>
-        <a href="#">STORAGE</a>
-    </div>
-
-    <!-- Asymmetric Split Hero Matching the Screenshot -->
-    <div class="hero-section">
-        <!-- Visual Left (Pink wall, 3 hanging pendants, sofa, monstera) -->
-        <div class="hero-visual">
-            <div class="pendant-cluster">
-                <div class="pendant-cord cord-1">
-                    <div class="lamp-shade shade-black"></div>
-                </div>
-                <div class="pendant-cord cord-2">
-                    <div class="lamp-shade shade-gold"></div>
-                </div>
-                <div class="pendant-cord cord-3">
-                    <div class="lamp-shade shade-grey"></div>
-                </div>
+    <!-- Master Bento Grid -->
+    <div class="bento-grid">
+        <!-- Tile 1: Hero Editorial Banner (Spans 8 columns) -->
+        <div class="bento-tile bento-rose-hero col-8">
+            <div>
+                <h2 class="hero-headline">Resilient Event-Driven<br>Trade Ingestion</h2>
+                <p class="hero-desc">
+                    Decoupled Kafka KRaft event stream with strict financial validation, automated idempotency, and quarantined Dead-Letter Queue routing.
+                </p>
             </div>
-
-            <div class="monstera-plant"></div>
-            <div class="dusty-pink-sofa"></div>
-            <div class="round-table"></div>
-        </div>
-
-        <!-- Editorial Right ("Design your happy place") -->
-        <div class="hero-editorial">
-            <h1 class="editorial-headline">Design your<br>happy place</h1>
-            <a class="cta-shop">Shop Now</a>
-
-            <div class="metrics-strip">
-                <div class="metric-cell">
-                    <div class="num" id="stat-valid">0</div>
-                    <div class="label">Committed Trades</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="num" style="color: #b5493d;" id="stat-dlq">0</div>
-                    <div class="label">Quarantined (DLQ)</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="num" id="stat-vol">0</div>
-                    <div class="label">Volume Traded</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="num" id="stat-val">$0.00</div>
-                    <div class="label">Turnover (USD)</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Real-time VWAP Ticker Strip -->
-    <div class="ticker-row">
-        <div class="ticker-title">Live Market Ticker (VWAP)</div>
-        <div class="ticker-list" id="ticker-list">
-            <span style="color: #9a8d86; font-size: 12px; font-style: italic;">Awaiting Kafka stream events...</span>
-        </div>
-    </div>
-
-    <!-- Lower Data Feeds -->
-    <div class="bottom-section">
-        <div class="table-panel">
-            <div class="panel-heading">
-                <span>Committed to Ledger</span>
-                <span class="pill-count" id="count-valid">0</span>
-            </div>
-            <div class="feed-container" id="valid-feed">
-                <div style="text-align: center; color: #9a8d86; padding: 40px 0; font-size: 13px;">No orders stored yet. Run producer.</div>
+            <div class="hero-pills-row">
+                <span class="hero-feature-pill">Kafka KRaft 3.9</span>
+                <span class="hero-feature-pill">PostgreSQL 16 Storage</span>
+                <span class="hero-feature-pill">Real-Time VWAP</span>
+                <span class="hero-feature-pill">Dead-Letter Queue (DLQ)</span>
             </div>
         </div>
 
-        <div class="table-panel">
-            <div class="panel-heading">
-                <span style="color: #b5493d;">Quarantined in DLQ</span>
-                <span class="pill-count" id="count-dlq">0</span>
+        <!-- Tile 2: Gross Capital Turnover (Spans 4 columns) -->
+        <div class="bento-tile col-4" style="background: var(--surface-cream);">
+            <div class="metric-header">
+                <span>Notional Turnover</span>
+                <span style="color: var(--ochre-gold);">◆</span>
             </div>
-            <div class="feed-container" id="dlq-feed">
-                <div style="text-align: center; color: #9a8d86; padding: 40px 0; font-size: 13px;">No rejected orders in DLQ.</div>
+            <div class="metric-digit" style="color: var(--ochre-gold); font-size: 38px;" id="val-turnover">$0.00</div>
+            <div class="metric-caption">Gross Executed Volume in USD</div>
+        </div>
+
+        <!-- Tile 3: Committed Trades (3 col) -->
+        <div class="bento-tile col-3">
+            <div class="metric-header">
+                <span>Committed Trades</span>
+                <span>●</span>
+            </div>
+            <div class="metric-digit" id="val-valid">0</div>
+            <div class="metric-caption">Persisted in PostgreSQL</div>
+        </div>
+
+        <!-- Tile 4: Quarantined DLQ (3 col) -->
+        <div class="bento-tile col-3">
+            <div class="metric-header">
+                <span>Quarantined in DLQ</span>
+                <span style="color: var(--crimson-soft);">▲</span>
+            </div>
+            <div class="metric-digit" style="color: var(--crimson-soft);" id="val-dlq">0</div>
+            <div class="metric-caption">Kafka trade-events-dlq</div>
+        </div>
+
+        <!-- Tile 5: Total Volume (3 col) -->
+        <div class="bento-tile col-3">
+            <div class="metric-header">
+                <span>Total Shares</span>
+                <span>■</span>
+            </div>
+            <div class="metric-digit" id="val-volume">0</div>
+            <div class="metric-caption">Cumulative Traded Volume</div>
+        </div>
+
+        <!-- Tile 6: Deduplication Ratio (3 col) -->
+        <div class="bento-tile col-3">
+            <div class="metric-header">
+                <span>Idempotency Status</span>
+                <span>✔</span>
+            </div>
+            <div class="metric-digit" style="font-size: 26px; color: var(--burgundy-accent);">Active</div>
+            <div class="metric-caption">Duplicates Safely Skipped</div>
+        </div>
+
+        <!-- Tile 7: Live VWAP Ticker Strip (Spans all 12 columns) -->
+        <div class="bento-tile ticker-bento col-12">
+            <div class="ticker-bento-title">
+                <span>Live Volume-Weighted Average Price (VWAP) Ticker</span>
+                <span style="font-family: 'Space Mono', monospace; font-size: 11px; opacity: 0.7;">Auto-syncing every 2s</span>
+            </div>
+            <div class="ticker-grid" id="ticker-grid">
+                <div class="empty-hint" style="padding: 10px;">Listening for market events on topic 'trade-events'...</div>
+            </div>
+        </div>
+
+        <!-- Tile 8: Left Feed - Valid PostgreSQL Trades (6 col) -->
+        <div class="bento-tile feed-bento col-6">
+            <div class="feed-heading-row">
+                <h3 class="feed-title">
+                    <span>◈</span> Valid Trades in PostgreSQL
+                </h3>
+                <span class="badge-pill badge-valid" id="badge-valid-count">0 Recorded</span>
+            </div>
+            <div class="feed-list" id="feed-valid">
+                <div class="empty-hint">No valid trades recorded yet. Run producer to stream events.</div>
+            </div>
+        </div>
+
+        <!-- Tile 9: Right Feed - DLQ Quarantined Events (6 col) -->
+        <div class="bento-tile feed-bento col-6">
+            <div class="feed-heading-row">
+                <h3 class="feed-title" style="color: var(--crimson-soft);">
+                    <span>◇</span> Quarantined in Dead-Letter Queue
+                </h3>
+                <span class="badge-pill badge-dlq" id="badge-dlq-count">0 Quarantined</span>
+            </div>
+            <div class="feed-list" id="feed-dlq">
+                <div class="empty-hint">No anomalies quarantined. Pipeline is clean.</div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    async function updateView() {
+    async function syncBento() {
         try {
             const res = await fetch('/api/dashboard');
             if (!res.ok) return;
             const data = await res.json();
 
-            // 1. Stats
-            document.getElementById('stat-valid').innerText = data.valid_trades.length;
-            document.getElementById('stat-dlq').innerText = data.dlq_trades.length;
-            document.getElementById('count-valid').innerText = `${data.valid_trades.length} Records`;
-            document.getElementById('count-dlq').innerText = `${data.dlq_trades.length} Quarantined`;
+            // 1. Metric Counts
+            document.getElementById('val-valid').innerText = data.valid_trades.length;
+            document.getElementById('val-dlq').innerText = data.dlq_trades.length;
+            document.getElementById('badge-valid-count').innerText = `${data.valid_trades.length} Recorded`;
+            document.getElementById('badge-dlq-count').innerText = `${data.dlq_trades.length} Quarantined`;
 
-            let vol = 0;
-            let val = 0;
+            let totalVol = 0;
+            let totalVal = 0;
             data.valid_trades.forEach(t => {
-                vol += t.quantity;
-                val += (t.price * t.quantity);
+                totalVol += t.quantity;
+                totalVal += (t.price * t.quantity);
             });
-            document.getElementById('stat-vol').innerText = vol.toLocaleString();
-            document.getElementById('stat-val').innerText = '$' + val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('val-volume').innerText = totalVol.toLocaleString();
+            document.getElementById('val-turnover').innerText = '$' + totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-            // 2. Tickers
-            const tickerBox = document.getElementById('ticker-list');
-            const keys = Object.keys(data.vwap_map || {});
-            if (keys.length > 0) {
-                tickerBox.innerHTML = keys.map(k => `
-                    <div class="ticker-item">
-                        <b>${k}</b>: $${data.vwap_map[k].price.toFixed(2)} &bull; <span style="color: #caa097;">VWAP: $${data.vwap_map[k].vwap.toFixed(2)}</span>
+            // 2. Ticker Grid
+            const tickerGrid = document.getElementById('ticker-grid');
+            const vwapKeys = Object.keys(data.vwap_map || {});
+            if (vwapKeys.length > 0) {
+                tickerGrid.innerHTML = vwapKeys.map(sym => `
+                    <div class="ticker-card">
+                        <span class="ticker-symbol">${sym}</span>
+                        <div class="ticker-data">
+                            <div class="price">$${data.vwap_map[sym].price.toFixed(2)}</div>
+                            <div class="vwap">VWAP: $${data.vwap_map[sym].vwap.toFixed(2)}</div>
+                        </div>
                     </div>
                 `).join('');
             }
 
             // 3. Valid Feed
-            const validBox = document.getElementById('valid-feed');
-            if (data.valid_trades.length > 0) {
-                validBox.innerHTML = data.valid_trades.map(t => `
-                    <div class="feed-card">
-                        <div class="card-top">
-                            <span class="id">${t.trade_id}</span>
-                            <span class="side-tag ${t.side === 'BUY' ? 'side-buy' : 'side-sell'}">${t.side}</span>
+            const feedValid = document.getElementById('feed-valid');
+            if (data.valid_trades.length === 0) {
+                feedValid.innerHTML = '<div class="empty-hint">No valid trades recorded yet. Run producer to stream events.</div>';
+            } else {
+                feedValid.innerHTML = data.valid_trades.map(t => `
+                    <div class="feed-entry valid-entry">
+                        <div class="entry-top">
+                            <span class="entry-id">${t.trade_id}</span>
+                            <span class="side-chip ${t.side.toLowerCase() === 'buy' ? 'side-buy' : 'side-sell'}">${t.side}</span>
                         </div>
-                        <div class="card-meta">
-                            <span>Sym: <strong>${t.symbol}</strong></span>
-                            <span>Qty: <strong>${t.quantity}</strong></span>
+                        <div class="entry-details">
+                            <span>Symbol: <strong>${t.symbol}</strong></span>
+                            <span>Shares: <strong>${t.quantity}</strong></span>
                             <span>Price: <strong>$${Number(t.price).toFixed(2)}</strong></span>
+                            <span>Total: <strong>$${(t.price * t.quantity).toFixed(2)}</strong></span>
                         </div>
                     </div>
                 `).join('');
             }
 
             // 4. DLQ Feed
-            const dlqBox = document.getElementById('dlq-feed');
-            if (data.dlq_trades.length > 0) {
-                dlqBox.innerHTML = data.dlq_trades.map(q => `
-                    <div class="feed-card">
-                        <div class="card-top">
-                            <span class="id">${q.key || 'MALFORMED'}</span>
-                            <span class="side-tag side-sell">${q.error_type || 'REJECTED'}</span>
+            const feedDlq = document.getElementById('feed-dlq');
+            if (data.dlq_trades.length === 0) {
+                feedDlq.innerHTML = '<div class="empty-hint">No anomalies quarantined. Pipeline is clean.</div>';
+            } else {
+                feedDlq.innerHTML = data.dlq_trades.map(q => `
+                    <div class="feed-entry dlq-entry">
+                        <div class="entry-top">
+                            <span class="entry-id">${q.key || 'MALFORMED_EVENT'}</span>
+                            <span class="side-chip side-sell">${q.error_type || 'REJECTED'}</span>
                         </div>
-                        <div class="dlq-box">${q.rejection_reason || 'Rejection reason unavailable'}</div>
+                        <div class="dlq-reason-box">${q.rejection_reason || 'Rejection reason unavailable'}</div>
                     </div>
                 `).join('');
             }
-        } catch (e) {
-            console.error(e);
+        } catch (err) {
+            console.error("Bento sync error:", err);
         }
     }
 
-    setInterval(updateView, 2000);
-    updateView();
+    setInterval(syncBento, 2000);
+    syncBento();
 </script>
 </body>
 </html>
